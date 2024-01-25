@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "GymBros",
-    "slug": "GymBros",
+    "slug": "gymbros",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7dc6d89e-f14f-4d61-8e4c-a3259393e321"
+      }
+    },
+    "owner": "alexisolmedo"
   }
 }
