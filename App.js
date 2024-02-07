@@ -1,19 +1,71 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity  } from 'react-native';
+import { StyleSheet,View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import LoginScreen from './src/Screens/LoginScreen';
+//import MainScreen from './src/Screens/MainScreen';
+import MealScreen from './src/Screens/MealScreen';
+import PTScreen from './src/Screens/PTScreen';
+import WeightScreen from './src/Screens/WeightScreen';
+import WorkoutTrackerScreen from './src/Screens/WorkoutTrackerScreen';
+import { FontAwesome5 } from '@expo/vector-icons';
+
+
+const Tab = createBottomTabNavigator();
+const screenOptions={
+
+}
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-    <Text style={styles.Title}>Login</Text>
-      <TextInput style={styles.Input} placeholder="Username" > </TextInput>
+    
+    <NavigationContainer>
+    <Tab.Navigator screenOptions={screenOptions}>
+    <Tab.Screen name="Meal" component={MealScreen} options ={{tabBarIcon: ({focused}) => {
+      return(
+        <View style ={{alignItems: "center", justifyContent: "center"}}>
+        <MaterialCommunityIcons name="food-drumstick" size={24} color="black" />
+          
+        </View> 
 
-      <TextInput style={styles.Input} placeholder="Password" > </TextInput>
-      <TouchableOpacity style={styles.LoginButton} ><Text style={styles.ButtonText}>Login</Text></TouchableOpacity>
-      <StatusBar style="auto" />
-      
-    </View>
+      )
+    }
+    }}/>
+
+    <Tab.Screen name="PT" component={PTScreen} options ={{tabBarIcon: ({focused}) => {
+      return(
+        <View style ={{alignItems: "center", justifyContent: "center"}}></View> 
+
+      )
+    }
+    }}/>
+
+
+    <Tab.Screen name="Weight" component={WeightScreen} options ={{tabBarIcon: ({focused}) => {
+      return(
+        <View style ={{alignItems: "center", justifyContent: "center"}}>
+          <FontAwesome5 name="weight" size={24} color="black" />
+        </View> 
+
+      )
+    }
+    }}/>
+
+    <Tab.Screen name="Workout" component={WorkoutTrackerScreen} options ={{tabBarIcon: ({focused}) => {
+      return(
+        <View style ={{alignItems: "center", justifyContent: "center"}}></View> 
+
+      )
+    }
+    }}/>
+    </Tab.Navigator>
+    
+    </NavigationContainer>
+    
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
