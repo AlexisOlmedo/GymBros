@@ -1,9 +1,27 @@
-import React  from'react';
-import {View, Text, Button,StyleSheet,TextInput, TouchableOpacity} from 'react-native';
+import React, {isValidElement, useState}  from 'react';
+import {View, Text, Button, StyleSheet,TextInput, TouchableOpacity, Switch} from 'react-native';
 
 const LoginScreen = () =>{
+  const [ isEnable, setIsEnable] = useState(true);
+  const [text, setText] = useState('Client/Personal Trainer');
+
+  const toggleSwitch = () =>{
+    if (isEnable) {
+      setText('Client')
+    } else{
+      setText('Personal Trainer')
+    }
+    setIsEnable(previousState => !previousState)
+  }
     return (
    <View style={styles.container}>
+      <Text style ={{fontWeight: 'bold', margin:20}}>{text}</Text>
+      <Switch
+      trackColor={{false:'red', true:'green'}}
+      ios_backgroundColor={'blue'}
+      onValueChange={toggleSwitch}
+      value={isEnable}/>
+
       <Text style={styles.Title}>Login</Text>
       <TextInput style={styles.Input} placeholder="Username" > </TextInput>
       <TextInput style={styles.Input} placeholder="Password" > </TextInput>
