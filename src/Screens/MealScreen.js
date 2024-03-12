@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Button, FlatList, StyleSheet, Switch } from 'react-native';
 
 const MealScreen = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedMealCategory, setSelectedMealCategory] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
   const mealData = {
     '2024-02-05': {
@@ -12,9 +13,7 @@ const MealScreen = () => {
       lunch: { name: 'Grilled Chicken Salad', ingredients: ['Chicken', 'Lettuce', 'Tomato'], portion: '1 plate', comments: 'Low calorie' },
       dinner: { name: 'Vegetable Stir-Fry', ingredients: ['Broccoli', 'Carrots', 'Bell Peppers'], portion: '1 serving', comments: 'Vegan option' },
     },
-    '2024-02-06': {
-      // Meal data for another date
-    },
+    
     // Add more date-wise meal data as needed
   };
 
@@ -32,19 +31,42 @@ const MealScreen = () => {
     setSelectedMealCategory(null);
     setShowModal(false);
   };
+  const [ isEnable, setIsEnable] = useState(true); /*switch button 35-45*/
+  const [text, setText] = useState('Client/Personal Trainer');
+
+  const toggleSwitch = () =>{
+    if (isEnable) {
+      setText('Client')
+    } else{
+      setText('Personal Trainer')
+    }
+    setIsEnable(previousState => !previousState);
+    setShowButton(previousState => !previousState);
+  }
 
   return (
+    
     <View style={styles.container}>
       <Text style={styles.heading}>Meal Planner</Text>
-      <FlatList
-        data={['Monday', '2024-02-06', '2024-02-07']} // Add more dates as needed
+      <Text style ={ styles.SwitchButtonText}>{text}</Text>
+      <Switch
+      trackColor={{false:'red', true:'green'}}
+      ios_backgroundColor={'blue'}
+      onValueChange={toggleSwitch}
+      value={isEnable}/>
+      
+      <FlatList /*WeekName list*/
+        data={['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']} 
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.dateButton} onPress={() => handleDatePress(item)}>
             <Text>{item}</Text>
           </TouchableOpacity>
+          
         )}
       />
+      
+      {showButton && <Button title="Add" style={styles.addButton} onPress={() => console.log("Add button pressed")}/>} 
 
       <Modal visible={showModal} animationType="slide">
         <View style={styles.modalContainer}>
@@ -60,7 +82,7 @@ const MealScreen = () => {
             </View>
           ) : (
             <FlatList
-              data={['breakfast', 'lunch', 'dinner']} // Add more meal categories as needed
+              data={['BREAKFAST', 'LUNCH', 'DINNER']}
               keyExtractor={(item) => item}
               renderItem={({ item }) => (
                 <TouchableOpacity style={styles.mealCategoryButton} onPress={() => handleMealCategoryPress(item)}>
@@ -70,7 +92,7 @@ const MealScreen = () => {
             />
           )}
 
-          <Button title="Close" onPress={handleCloseModal} />
+          <Button title="Close" style ={styles.closeButton} onPress={handleCloseModal} />
         </View>
       </Modal>
     </View>
@@ -79,43 +101,62 @@ const MealScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    align: 'center',
     justifyContent: 'center',
   },
   heading: {
-    fontSize: 20,
+    textAlign: 'right',
+    fontSize: 40,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 20,
+  },
+
+  SwitchButtonText:{
+    textAlign: 'center',
   },
   dateButton: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    margin: 5,
+    borderWidth: 2,
+    borderColor: 'red',
+    paddingHorizontal: 30,
+    paddingVertical: 20,
+    marginVertical: 5,
+    marginHorizontal: 0,
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 50,
+    
   },
   modalHeading: {
-    fontSize: 18,
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginTop: 70,
+    
   },
   mealCategoryButton: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#ccc',
-    padding: 10,
-    margin: 5,
+    paddingHorizontal: 70,
+    paddingVertical: 30,
+   margin: 50,
+    
+
   },
   mealCategoryHeading: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginTop: 10,
-    marginBottom: 5,
+    
+    
+  },
+  closeButton: {
+    borderWidth: 2,
+    marginTop: 'auto',
+    marginBottom: 20,
+    alignSelf: 'center',
   },
 });
 
