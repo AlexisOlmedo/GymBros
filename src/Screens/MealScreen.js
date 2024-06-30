@@ -14,7 +14,7 @@ const MealScreen = () => {
       dinner: { name: 'Vegetable Stir-Fry', ingredients: ['Broccoli', 'Carrots', 'Bell Peppers'], portion: '1 serving', comments: 'Vegan option' },
     },
     
-    // Add more date-wise meal data as needed
+   
   };
 
   const handleDatePress = (date) => {
@@ -72,7 +72,7 @@ const MealScreen = () => {
         <View style={styles.modalContainer}>
           <Text style={styles.modalHeading}>{selectedDate} Meals</Text>
 
-          {selectedMealCategory ? (
+          {selectedMealCategory && selectedDate && mealData[selectedDate]?.[selectedMealCategory] &&  (
             <View>
               <Text style={styles.mealCategoryHeading}>{selectedMealCategory}</Text>
               <Text>Name: {mealData[selectedDate][selectedMealCategory].name}</Text>
@@ -80,7 +80,7 @@ const MealScreen = () => {
               <Text>Portion: {mealData[selectedDate][selectedMealCategory].portion}</Text>
               <Text>Comments: {mealData[selectedDate][selectedMealCategory].comments}</Text>
             </View>
-          ) : (
+          )} 
             <FlatList
               data={['BREAKFAST', 'LUNCH', 'DINNER']}
               keyExtractor={(item) => item}
@@ -90,7 +90,6 @@ const MealScreen = () => {
                 </TouchableOpacity>
               )}
             />
-          )}
 
           <Button title="Close" style ={styles.closeButton} onPress={handleCloseModal} />
         </View>

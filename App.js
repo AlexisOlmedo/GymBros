@@ -1,22 +1,25 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet,View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/Screens/LoginScreen';
-import MealScreen from './src/Screens/MealScreen';
-import WorkoutTrackerScreen from './src/Screens/WorkoutTrackerScreen';
+import MainScreen from './src/Screens/MainScreen';
+import ClientPTScreen from './src/PTScreen/ClientPTScreen';
+
+const Stack = createStackNavigator();
 
 
-
-const Tab = createBottomTabNavigator();
 
 
 export default function App() {
+  
   return (
     <NavigationContainer>
-    <Tab.Navigator>
-        <Tab.Screen name="Login" component={WorkoutTrackerScreen} />
-      </Tab.Navigator>
+    <Stack.Navigator >
+        <Stack.Screen name="Main" component={MainScreen}/>
+        
+        </Stack.Navigator>
   </NavigationContainer>
     
   );

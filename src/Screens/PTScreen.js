@@ -4,6 +4,7 @@ import { View, Text, FlatList, TouchableOpacity, Modal, Button, Image, StyleShee
 const PTScreen = () => {
   const [selectedTrainer, setSelectedTrainer] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  
 
   const trainersData = [
     {
@@ -12,6 +13,16 @@ const PTScreen = () => {
       age: 30,
       picture: 'https://example.com/johndoe.jpg',
       distance: '5 miles',
+      description: 'Certified personal trainer with 5 years of experience. Specializing in weight loss and muscle gain.',
+      benefits: 'Tailored workout plans, nutritional guidance, progress tracking.',
+      certificates: ['ACE Certified', 'CPR and AED Certified'],
+    },
+    {
+      id: '2',
+      name: 'Alexis Olmedo',
+      age: 20,
+      picture: 'https://example.com/johndoe.jpg',
+      distance: '2 miles',
       description: 'Certified personal trainer with 5 years of experience. Specializing in weight loss and muscle gain.',
       benefits: 'Tailored workout plans, nutritional guidance, progress tracking.',
       certificates: ['ACE Certified', 'CPR and AED Certified'],
@@ -76,6 +87,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 50,
   },
   heading: {
     fontSize: 20,
@@ -103,6 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 50,
   },
   selectedTrainerImage: {
     width: 150,

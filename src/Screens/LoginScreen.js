@@ -1,9 +1,14 @@
 import React, {isValidElement, useState}  from 'react';
 import {View, Text, Button, StyleSheet,TextInput, TouchableOpacity, Switch} from 'react-native';
+import{useNavigation} from '@react-navigation/native';
+
+
+
 
 const LoginScreen = () =>{
   const [ isEnable, setIsEnable] = useState(true);
   const [text, setText] = useState('Client/Personal Trainer');
+  const navigation = useNavigation();
 
   const toggleSwitch = () =>{
     if (isEnable) {
@@ -13,6 +18,15 @@ const LoginScreen = () =>{
     }
     setIsEnable(previousState => !previousState)
   }
+
+  const PathLogin = () =>{
+     if(isEnable){
+      navigation.navigate('ProfilePTScreen')
+     } else{
+      navigation.navigate('MainScreen')
+
+     }
+  };
     return (
    <View style={styles.container}>
       <Text style ={{fontWeight: 'bold', margin:20}}>{text}</Text>
@@ -24,8 +38,9 @@ const LoginScreen = () =>{
 
       <Text style={styles.Title}>Login</Text>
       <TextInput style={styles.Input} placeholder="Username" > </TextInput>
-      <TextInput style={styles.Input} placeholder="Password" > </TextInput>
-      <TouchableOpacity style={styles.LoginButton} ><Text style={styles.ButtonText}>Login</Text></TouchableOpacity>
+      <TextInput style={styles.Input} placeholder="Password" secureTextEntry={true} > </TextInput>
+      <TouchableOpacity style={styles.LoginButton} onPress={PathLogin} >
+      <Text style={styles.ButtonText}>Login</Text></TouchableOpacity>
       
       
     </View>

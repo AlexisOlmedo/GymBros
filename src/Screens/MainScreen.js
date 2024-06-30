@@ -5,29 +5,38 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Image } from 'react-native';
-//import MainScreen from './src/Screens/MainScreen';
-import MealScreen from './src/Screens/MealScreen';
-import PTScreen from './src/Screens/PTScreen';
-import WeightScreen from './src/Screens/WeightScreen';
-import WorkoutTrackerScreen from './src/Screens/WorkoutTrackerScreen';
+
+
+import MealScreen from './MealScreen';
+import WorkoutTrackerScreen from './WorkoutTrackerScreen';
+import WeightScreen from './WeightScreen';
+import PTScreen from './PTScreen';
 
 
 
 const Tab = createBottomTabNavigator();
-const screenOptions={
+const screenOptions = {
+  tabBarStyle:{
+    backgroundColor: 'white', // Background color of the tab bar
+    borderTopWidth: 1, // Border on top of the tab bar
+    borderTopColor: 'gray', // Color of the border
+    height: 60, // Height of the tab bar
 
-}
+  },
+  tabBarActiveTintColor:'blue'
+};
+
 
 
 const MainScreen = () =>{
   return (
     
-    <NavigationContainer>
+    
     <Tab.Navigator screenOptions={screenOptions}>
     <Tab.Screen name="Meal" component={MealScreen} options ={{tabBarIcon: ({focused}) => {
       return(
         <View style ={{alignItems: "center", justifyContent: "center"}}>
-        <MaterialCommunityIcons name="food-drumstick" size={24} color="black" />
+        
           
         </View> 
 
@@ -38,7 +47,7 @@ const MainScreen = () =>{
     <Tab.Screen name="PT" component={PTScreen} options ={{tabBarIcon: ({focused}) => {
       return(
         <View style ={{alignItems: "center", justifyContent: "center"}}>
-          <Image source={require('./assets/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.webp')} style={{ width: 30, height: 30 }}></Image>
+         
         </View> 
 
       )
@@ -49,7 +58,7 @@ const MainScreen = () =>{
     <Tab.Screen name="Weight" component={WeightScreen} options ={{tabBarIcon: ({focused}) => {
       return(
         <View style ={{alignItems: "center", justifyContent: "center"}}>
-          <FontAwesome5 name="weight" size={24} color="black" />
+          
         </View> 
 
       )
@@ -59,7 +68,7 @@ const MainScreen = () =>{
     <Tab.Screen name="Workout" component={WorkoutTrackerScreen} options ={{tabBarIcon: ({focused}) => {
       return(
         <View style ={{alignItems: "center", justifyContent: "center"}}>
-          <Image source={require('./assets/3043888.png')} style={{ width: 30, height: 30 }}></Image>
+          
         </View> 
 
       )
@@ -67,7 +76,6 @@ const MainScreen = () =>{
     }}/>
     </Tab.Navigator>
     
-    </NavigationContainer>
     
   );
 };
