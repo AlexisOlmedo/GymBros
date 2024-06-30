@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, FlatList, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit'; 
 
 const WeightTrackerScreen = () => {
@@ -12,8 +12,19 @@ const WeightTrackerScreen = () => {
   const saveData =() => { // save the date to a backedn server or local
     const newDataPoint ={ date: new Date().toLocaleDateString(), weight: parseFloat(weight)};
     setWeightData([...weightData, newDataPoint]);
-    setIsWeightEditable(false);
+    setIsWeightEditable(true);
   }
+
+ 
+
+  const chartData = {
+    labels: weightData.map(data => data.date),
+    datasets: [
+      {
+        data: weightData.map(data => data.weight),
+      }
+    ]
+  };
 
 
   return (
@@ -47,6 +58,36 @@ const WeightTrackerScreen = () => {
 
       </View>
       <Button title="Save Data"  onPress ={saveData} />
+
+      <View style={styles.chartContainer}>
+        <LineChart
+          data={chartData}
+          width={Dimensions.get('window').width - 20} // from react-native
+          height={220}
+          yAxisLabel=""
+          yAxisSuffix="kg"
+          chartConfig={{
+            backgroundColor: '#e26a00',
+            backgroundGradientFrom: '#fb8c00',
+            backgroundGradientTo: '#ffa726',
+            decimalPlaces: 2,
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16
+            },
+            propsForDots: {
+              r: '6',
+              strokeWidth: '2',
+              stroke: '#ffa726'
+            }
+          }}
+          style={{
+            marginVertical: 8,
+            borderRadius: 16
+          }}
+        />
+      </View>
 
     
 
