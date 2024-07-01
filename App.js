@@ -17,7 +17,7 @@ export default function App() {
   return (
     <NavigationContainer>
     <Stack.Navigator >
-        <Stack.Screen name="Main" component={MainScreen}/>
+        <Stack.Screen name="Main" component={ClientPTScreen}/>
         
         </Stack.Navigator>
   </NavigationContainer>

@@ -6,6 +6,15 @@ const WorkoutTrackerScreen = () => {
   const [showModal, setShowModal] = useState(false);
   const [progress, setProgress] = useState([]);
   const [showButton, setShowButton] = useState(false);
+  const [workoutPlan, setWorkoutPlan] = useState({
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+    Sunday: [],
+  });
 
   const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -20,39 +29,67 @@ const WorkoutTrackerScreen = () => {
     setShowModal(true);
   };
 
-
-  
-
   const handleSaveProgress = () => {
-    // Save progress to a backend server or local storage
     console.log('Progress saved:', progress);
     setShowModal(false);
   };
-  const [ isEnable, setIsEnable] = useState(true); /*switch button 35-45*/
+
+  const [isEnable, setIsEnable] = useState(true);
   const [text, setText] = useState('Client/Personal Trainer');
 
-  const toggleSwitch = () =>{
-    if (isEnable) {
-      setText('Client')
-    } else{
-      setText('Personal Trainer')
-    }
-    setIsEnable(previousState => !previousState);
-    setShowButton(previousState => !previousState);
-  }
-  {showButton && <Button title="Add" style={styles.addButton} onPress={() => console.log("Add button pressed")}/>}
+  const toggleSwitch = () => {
+    setText(isEnable ? 'Client' : 'Personal Trainer');
+    setIsEnable((prevState) => !prevState);
+    setShowButton((prevState) => !prevState);
+  };
 
+  const handleWorkoutChange = (day, exercise, sets, reps) => {
+    const updatedPlan = { ...workoutPlan };
+    updatedPlan[day].push({ exercise, sets, reps });
+    setWorkoutPlan(updatedPlan);
+  };
+
+  const renderWorkoutPlanForm = () => (
+    <View>
+      <Text style={styles.modalHeading}>{selectedDay} Workout Plan</Text>
+      {['exercise', 'sets', 'reps'].map((field) => (
+        <View key={field} style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder={`Enter ${field}`}
+            onChangeText={(text) => handleWorkoutChange(selectedDay, field === 'exercise' ? text : null, field === 'sets' ? text : null, field === 'reps' ? text : null)}
+          />
+        </View>
+      ))}
+      <Button title="Save" onPress={() => setShowModal(false)} />
+    </View>
+  );
+
+  const renderPTWorkoutPlan = () => (
+    <View>
+      <Text style={styles.modalHeading}>{selectedDay} Workout Plan</Text>
+      {workoutData[selectedDay]?.map((item, index) => (
+        <View key={index} style={styles.exerciseItem}>
+          <Text>Exercise: {item.exercise}</Text>
+          <Text>Sets: {item.sets}</Text>
+          <Text>Reps: {item.reps}</Text>
+        </View>
+      ))}
+      <Button title="Close" onPress={() => setShowModal(false)} />
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Weekly Workout Plan</Text>
-      <Text style ={ styles.SwitchButtonText}>{text}</Text>
-      <View style ={styles.switchContainer}>
-      <Switch
-      trackColor={{false:'red', true:'green'}}
-      ios_backgroundColor={'blue'}
-      onValueChange={toggleSwitch}
-      value={isEnable}/>
+      <Text style={styles.SwitchButtonText}>{text}</Text>
+      <View style={styles.switchContainer}>
+        <Switch
+          trackColor={{ false: 'red', true: 'green' }}
+          ios_backgroundColor={'blue'}
+          onValueChange={toggleSwitch}
+          value={isEnable}
+        />
       </View>
 
       <FlatList
@@ -68,26 +105,7 @@ const WorkoutTrackerScreen = () => {
 
       <Modal visible={showModal} animationType="slide">
         <View style={styles.modalContainer}>
-          <Text style={styles.modalHeading}>{selectedDay} Workout Plan</Text>
-          <FlatList
-            data={workoutData[selectedDay]}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.exerciseItem}>
-                <Text>{item.exercise}</Text>
-                <Text>Sets: {item.sets}</Text>
-                <Text>Reps: {item.reps}</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter reps done"
-                  keyboardType="numeric"
-                  onChangeText={(text) => setProgress([...progress, { exercise: item.exercise, repsDone: text }])}
-                />
-              </View>
-            )}
-          />
-          <Button title="Save Progress" onPress={handleSaveProgress} />
-          <Button title="Close" onPress={() => setShowModal(false)} />
+          {isEnable ? renderWorkoutPlanForm() : renderPTWorkoutPlan()}
         </View>
       </Modal>
     </View>
