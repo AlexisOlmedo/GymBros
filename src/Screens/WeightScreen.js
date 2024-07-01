@@ -10,11 +10,16 @@ const WeightTrackerScreen = () => {
   const [weightData, setWeightData] = useState([]);
 
   const saveData =() => { // save the date to a backedn server or local
-    const newDataPoint ={ date: new Date().toLocaleDateString(), weight: parseFloat(weight)};
-    setWeightData([...weightData, newDataPoint]);
-    setIsWeightEditable(true);
-  }
+    const newDataPoint = { date: new Date().toLocaleDateString(), weight: parseFloat(weight) };
+    if (!isNaN(newDataPoint.weight)) {
+      setWeightData([...weightData, newDataPoint]);
+      setIsWeightEditable(false);
+    }
+  };
 
+const enableWeightEditing = () => {
+    setIsWeightEditable(true);
+}
  
 
   const chartData = {
@@ -25,6 +30,9 @@ const WeightTrackerScreen = () => {
       }
     ]
   };
+
+  const screenWidth = Dimensions.get('window').width;
+
 
 
   return (
@@ -57,61 +65,60 @@ const WeightTrackerScreen = () => {
           />
 
       </View>
-      <Button title="Save Data"  onPress ={saveData} />
+      <Button title="Save Data" onPress={saveData} />
+      {!isWeightEditable && <Button title="Edit Weight" onPress={enableWeightEditing} />}
 
       <View style={styles.chartContainer}>
-        <LineChart
-          data={chartData}
-          width={Dimensions.get('window').width - 20} // from react-native
-          height={220}
-          yAxisLabel=""
-          yAxisSuffix="kg"
-          chartConfig={{
-            backgroundColor: '#e26a00',
-            backgroundGradientFrom: '#fb8c00',
-            backgroundGradientTo: '#ffa726',
-            decimalPlaces: 2,
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
+        {weightData.length > 0 ? (
+          <LineChart
+            data={chartData}
+            width={screenWidth - 20}
+            height={220}
+            yAxisLabel=""
+            yAxisSuffix="kg"
+            chartConfig={{
+              backgroundColor: '#e26a00',
+              backgroundGradientFrom: '#fb8c00',
+              backgroundGradientTo: '#ffa726',
+              decimalPlaces: 2,
+              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+              style: {
+                borderRadius: 16
+              },
+              propsForDots: {
+                r: '6',
+                strokeWidth: '2',
+                stroke: '#ffa726'
+              }
+            }}
+            style={{
+              marginVertical: 8,
               borderRadius: 16
-            },
-            propsForDots: {
-              r: '6',
-              strokeWidth: '2',
-              stroke: '#ffa726'
-            }
-          }}
-          style={{
-            marginVertical: 8,
-            borderRadius: 16
-          }}
-        />
+            }}
+          />
+        ) : (
+          <Text>No data available to display the chart.</Text>
+        )}
       </View>
-
-    
 
       <View style={styles.tableContainer}>
-      <Text style={styles.tableHeader}>Date</Text>
-      <Text style={styles.tableHeader}>Weight</Text>
+        <Text style={styles.tableHeader}>Date</Text>
+        <Text style={styles.tableHeader}>Weight</Text>
         <FlatList
-        data={weightData}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) =>(
-          <View style={styles.tableRow}>
-            <Text style={styles.tableCell}>{item.date}</Text>
-            <Text style={styles.tableCell}>{item.weight}</Text>
-          </View>
-        )}
-
+          data={weightData}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.tableRow}>
+              <Text style={styles.tableCell}>{item.date}</Text>
+              <Text style={styles.tableCell}>{item.weight}</Text>
+            </View>
+          )}
         />
       </View>
-      </View>
-
-      
-)}
-     
-
+    </View>
+  );
+};
     
 
 const styles = StyleSheet.create({
