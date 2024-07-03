@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, Text, TouchableOpacity, Button, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { View, Image, Text, TouchableOpacity, Button, TextInput, StyleSheet, ScrollView, FlatList } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Video } from 'expo-av';
 
@@ -7,6 +7,7 @@ const ProfilePTScreen = () => {
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [postContent, setPostContent] = useState('');
+  const [posts, setPosts] = useState([]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -35,11 +36,20 @@ const ProfilePTScreen = () => {
   };
 
   const handleUploadPost = () => {
-    console.log('Post uploaded', { image, video, postContent });
+    const newPost = { image, video, content: postContent };
+    setPosts([...posts, newPost]);
     setImage(null);
     setVideo(null);
     setPostContent('');
   };
+
+  const renderPostItem = ({ item }) => (
+    <View style={styles.postItem}>
+      {item.image && <Image source={{ uri: item.image }} style={styles.media} />}
+      {item.video && <Video source={{ uri: item.video }} style={styles.media} useNativeControls resizeMode="contain" />}
+      <Text style={styles.postContent}>{item.content}</Text>
+    </View>
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -65,6 +75,13 @@ const ProfilePTScreen = () => {
       />
 
       <Button title="Upload Post" onPress={handleUploadPost} disabled={!image && !video && !postContent} />
+
+      <Text style={styles.heading}>Published Posts</Text>
+      <FlatList
+        data={posts}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderPostItem}
+      />
     </ScrollView>
   );
 };
@@ -105,6 +122,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginVertical: 20,
     width: '100%',
+  },
+  postItem: {
+    marginBottom: 20,
+    width: '100%',
+    alignItems: 'center',
+  },
+  postContent: {
+    marginTop: 10,
+    fontSize: 16,
   },
 });
 
