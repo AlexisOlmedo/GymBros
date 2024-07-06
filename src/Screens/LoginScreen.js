@@ -1,54 +1,48 @@
-import React, {isValidElement, useState}  from 'react';
-import {View, Text, Button, StyleSheet,TextInput, TouchableOpacity, Switch} from 'react-native';
-import{useNavigation} from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, Switch } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-
-
-
-const LoginScreen = () =>{
-  const [ isEnable, setIsEnable] = useState(true);
+const LoginScreen = () => {
+  const [isEnable, setIsEnable] = useState(false);
   const [text, setText] = useState('Client/Personal Trainer');
   const navigation = useNavigation();
 
-  const toggleSwitch = () =>{
+  const toggleSwitch = () => {
     if (isEnable) {
-      setText('Client')
-    } else{
-      setText('Personal Trainer')
+      setText('Client');
+    } else {
+      setText('Personal Trainer');
     }
-    setIsEnable(previousState => !previousState)
-  }
-
-  const PathLogin = () =>{
-     if(isEnable){
-      navigation.navigate('ProfilePTScreen')
-     } else{
-      navigation.navigate('MainScreen')
-
-     }
+    setIsEnable(previousState => !previousState);
   };
-    return (
-   <View style={styles.container}>
-      <Text style ={{fontWeight: 'bold', margin:20}}>{text}</Text>
+
+  const pathLogin = () => {
+    if (isEnable) {
+      navigation.navigate('ClientPTScreen');
+    } else {
+      navigation.navigate('MainScreen');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={{ fontWeight: 'bold', margin: 20 }}>{text}</Text>
       <Switch
-      trackColor={{false:'red', true:'green'}}
-      ios_backgroundColor={'blue'}
-      onValueChange={toggleSwitch}
-      value={isEnable}/>
-
+        trackColor={{ false: 'red', true: 'green' }}
+        ios_backgroundColor={'blue'}
+        onValueChange={toggleSwitch}
+        value={isEnable}
+      />
       <Text style={styles.Title}>Login</Text>
-      <TextInput style={styles.Input} placeholder="Username" > </TextInput>
-      <TextInput style={styles.Input} placeholder="Password" secureTextEntry={true} > </TextInput>
-      <TouchableOpacity style={styles.LoginButton} onPress={PathLogin} >
-      <Text style={styles.ButtonText}>Login</Text></TouchableOpacity>
-      
-      
+      <TextInput style={styles.Input} placeholder="Username" />
+      <TextInput style={styles.Input} placeholder="Password" secureTextEntry={true} />
+      <TouchableOpacity style={styles.LoginButton} onPress={pathLogin}>
+        <Text style={styles.ButtonText}>Login</Text>
+      </TouchableOpacity>
     </View>
-
-    );
-
-
+  );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

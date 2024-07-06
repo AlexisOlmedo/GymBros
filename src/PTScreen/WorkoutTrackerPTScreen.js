@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Button, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Button, TextInput, StyleSheet } from 'react-native';
 
 const WorkoutTrackerPTScreen = () => {
   const [clients, setClients] = useState([
@@ -50,7 +50,7 @@ const WorkoutTrackerPTScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.heading}>Clients</Text>
       <FlatList
         data={clients}
@@ -60,6 +60,7 @@ const WorkoutTrackerPTScreen = () => {
             <Text>{item.name}</Text>
           </TouchableOpacity>
         )}
+        contentContainerStyle={styles.flatListContainer}
       />
       <Button title="Add Client" onPress={handleAddClient} />
 
@@ -96,7 +97,7 @@ const WorkoutTrackerPTScreen = () => {
           {!editable && <Button title="Change Workout Plan" onPress={handleChangeWorkoutPlan} />}
         </View>
       )}
-    </ScrollView>
+    </View>
   );
 };
 
@@ -115,6 +116,9 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     padding: 10,
     marginVertical: 5,
+  },
+  flatListContainer: {
+    paddingBottom: 20,
   },
   workoutPlanContainer: {
     marginTop: 20,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, Text, TouchableOpacity, Button, TextInput, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Image, Text, TouchableOpacity, Button, TextInput, StyleSheet, FlatList } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Video } from 'expo-av';
 
@@ -17,8 +17,8 @@ const ProfilePTScreen = () => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
     }
   };
 
@@ -30,8 +30,8 @@ const ProfilePTScreen = () => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setVideo(result.uri);
+    if (!result.canceled) {
+      setVideo(result.assets[0].uri);
     }
   };
 
@@ -51,8 +51,8 @@ const ProfilePTScreen = () => {
     </View>
   );
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
+  const renderHeader = () => (
+    <View style={styles.header}>
       <Text style={styles.heading}>Upload Content</Text>
 
       <TouchableOpacity style={styles.button} onPress={pickImage}>
@@ -75,23 +75,29 @@ const ProfilePTScreen = () => {
       />
 
       <Button title="Upload Post" onPress={handleUploadPost} disabled={!image && !video && !postContent} />
+    </View>
+  );
 
-      <Text style={styles.heading}>Published Posts</Text>
-      <FlatList
-        data={posts}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderPostItem}
-      />
-    </ScrollView>
+  return (
+    <FlatList
+      ListHeaderComponent={renderHeader}
+      data={posts}
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={renderPostItem}
+      contentContainerStyle={styles.container}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
+  },
+  header: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   heading: {
     fontSize: 20,
@@ -122,6 +128,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginVertical: 20,
     width: '100%',
+  },
+  postsContainer: {
+    alignItems: 'center',
   },
   postItem: {
     marginBottom: 20,

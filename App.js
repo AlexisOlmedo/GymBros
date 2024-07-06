@@ -16,10 +16,11 @@ export default function App() {
   
   return (
     <NavigationContainer>
-    <Stack.Navigator >
-        <Stack.Screen name="Main" component={ClientPTScreen}/>
-        
-        </Stack.Navigator>
+    <Stack.Navigator initialRouteName="LoginScreen">
+      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ClientPTScreen" component={ClientPTScreen} options={{ headerShown: false }} />
+    </Stack.Navigator>
   </NavigationContainer>
     
   );
